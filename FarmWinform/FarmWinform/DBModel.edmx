@@ -1,0 +1,295 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="FarmDbModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Animal">
+          <Key>
+            <PropertyRef Name="AnimalId" />
+          </Key>
+          <Property Name="AnimalId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="AnimalTypeId" Type="int" />
+          <Property Name="MilkProduced" Type="float" Nullable="false" />
+          <Property Name="OffspringCount" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="AnimalType">
+          <Key>
+            <PropertyRef Name="AnimalTypeId" />
+          </Key>
+          <Property Name="AnimalTypeId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="AnimalName" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Sound" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="FarmStatistics">
+          <Key>
+            <PropertyRef Name="StatisticsId" />
+          </Key>
+          <Property Name="StatisticsId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Date" Type="datetime" Nullable="false" />
+          <Property Name="TotalMilk" Type="float" Nullable="false" />
+          <Property Name="TotalOffspring" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="MilkStatistics">
+          <Key>
+            <PropertyRef Name="StatisticsId" />
+          </Key>
+          <Property Name="StatisticsId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="AnimalId" Type="int" />
+          <Property Name="Date" Type="datetime" Nullable="false" />
+          <Property Name="MilkProduced" Type="float" Nullable="false" />
+        </EntityType>
+        <EntityType Name="OffspringStatistics">
+          <Key>
+            <PropertyRef Name="StatisticsId" />
+          </Key>
+          <Property Name="StatisticsId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="AnimalId" Type="int" />
+          <Property Name="Date" Type="datetime" Nullable="false" />
+          <Property Name="OffspringCount" Type="int" Nullable="false" />
+        </EntityType>
+        <Association Name="FK__Animal__AnimalTy__398D8EEE">
+          <End Role="AnimalType" Type="Self.AnimalType" Multiplicity="0..1" />
+          <End Role="Animal" Type="Self.Animal" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AnimalType">
+              <PropertyRef Name="AnimalTypeId" />
+            </Principal>
+            <Dependent Role="Animal">
+              <PropertyRef Name="AnimalTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__MilkStati__Anima__3C69FB99">
+          <End Role="Animal" Type="Self.Animal" Multiplicity="0..1" />
+          <End Role="MilkStatistics" Type="Self.MilkStatistics" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Animal">
+              <PropertyRef Name="AnimalId" />
+            </Principal>
+            <Dependent Role="MilkStatistics">
+              <PropertyRef Name="AnimalId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Offspring__Anima__3F466844">
+          <End Role="Animal" Type="Self.Animal" Multiplicity="0..1" />
+          <End Role="OffspringStatistics" Type="Self.OffspringStatistics" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Animal">
+              <PropertyRef Name="AnimalId" />
+            </Principal>
+            <Dependent Role="OffspringStatistics">
+              <PropertyRef Name="AnimalId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="FarmDbModelStoreContainer">
+          <EntitySet Name="Animal" EntityType="Self.Animal" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="AnimalType" EntityType="Self.AnimalType" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="FarmStatistics" EntityType="Self.FarmStatistics" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="MilkStatistics" EntityType="Self.MilkStatistics" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="OffspringStatistics" EntityType="Self.OffspringStatistics" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__Animal__AnimalTy__398D8EEE" Association="Self.FK__Animal__AnimalTy__398D8EEE">
+            <End Role="AnimalType" EntitySet="AnimalType" />
+            <End Role="Animal" EntitySet="Animal" />
+          </AssociationSet>
+          <AssociationSet Name="FK__MilkStati__Anima__3C69FB99" Association="Self.FK__MilkStati__Anima__3C69FB99">
+            <End Role="Animal" EntitySet="Animal" />
+            <End Role="MilkStatistics" EntitySet="MilkStatistics" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Offspring__Anima__3F466844" Association="Self.FK__Offspring__Anima__3F466844">
+            <End Role="Animal" EntitySet="Animal" />
+            <End Role="OffspringStatistics" EntitySet="OffspringStatistics" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="FarmDbModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Animal">
+          <Key>
+            <PropertyRef Name="AnimalId" />
+          </Key>
+          <Property Name="AnimalId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="AnimalTypeId" Type="Int32" />
+          <Property Name="MilkProduced" Type="Double" Nullable="false" />
+          <Property Name="OffspringCount" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="AnimalType" Relationship="Self.FK__Animal__AnimalTy__398D8EEE" FromRole="Animal" ToRole="AnimalType" />
+          <NavigationProperty Name="MilkStatistics" Relationship="Self.FK__MilkStati__Anima__3C69FB99" FromRole="Animal" ToRole="MilkStatistics" />
+          <NavigationProperty Name="OffspringStatistics" Relationship="Self.FK__Offspring__Anima__3F466844" FromRole="Animal" ToRole="OffspringStatistics" />
+        </EntityType>
+        <EntityType Name="AnimalType">
+          <Key>
+            <PropertyRef Name="AnimalTypeId" />
+          </Key>
+          <Property Name="AnimalTypeId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="AnimalName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Sound" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Animals" Relationship="Self.FK__Animal__AnimalTy__398D8EEE" FromRole="AnimalType" ToRole="Animal" />
+        </EntityType>
+        <EntityType Name="FarmStatistic">
+          <Key>
+            <PropertyRef Name="StatisticsId" />
+          </Key>
+          <Property Name="StatisticsId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Date" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="TotalMilk" Type="Double" Nullable="false" />
+          <Property Name="TotalOffspring" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="MilkStatistic">
+          <Key>
+            <PropertyRef Name="StatisticsId" />
+          </Key>
+          <Property Name="StatisticsId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="AnimalId" Type="Int32" />
+          <Property Name="Date" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="MilkProduced" Type="Double" Nullable="false" />
+          <NavigationProperty Name="Animal" Relationship="Self.FK__MilkStati__Anima__3C69FB99" FromRole="MilkStatistics" ToRole="Animal" />
+        </EntityType>
+        <EntityType Name="OffspringStatistic">
+          <Key>
+            <PropertyRef Name="StatisticsId" />
+          </Key>
+          <Property Name="StatisticsId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="AnimalId" Type="Int32" />
+          <Property Name="Date" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="OffspringCount" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Animal" Relationship="Self.FK__Offspring__Anima__3F466844" FromRole="OffspringStatistics" ToRole="Animal" />
+        </EntityType>
+        <Association Name="FK__Animal__AnimalTy__398D8EEE">
+          <End Role="AnimalType" Type="Self.AnimalType" Multiplicity="0..1" />
+          <End Role="Animal" Type="Self.Animal" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AnimalType">
+              <PropertyRef Name="AnimalTypeId" />
+            </Principal>
+            <Dependent Role="Animal">
+              <PropertyRef Name="AnimalTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__MilkStati__Anima__3C69FB99">
+          <End Role="Animal" Type="Self.Animal" Multiplicity="0..1" />
+          <End Role="MilkStatistics" Type="Self.MilkStatistic" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Animal">
+              <PropertyRef Name="AnimalId" />
+            </Principal>
+            <Dependent Role="MilkStatistics">
+              <PropertyRef Name="AnimalId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Offspring__Anima__3F466844">
+          <End Role="Animal" Type="Self.Animal" Multiplicity="0..1" />
+          <End Role="OffspringStatistics" Type="Self.OffspringStatistic" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Animal">
+              <PropertyRef Name="AnimalId" />
+            </Principal>
+            <Dependent Role="OffspringStatistics">
+              <PropertyRef Name="AnimalId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="FarmDbEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Animals" EntityType="Self.Animal" />
+          <EntitySet Name="AnimalTypes" EntityType="Self.AnimalType" />
+          <EntitySet Name="FarmStatistics" EntityType="Self.FarmStatistic" />
+          <EntitySet Name="MilkStatistics" EntityType="Self.MilkStatistic" />
+          <EntitySet Name="OffspringStatistics" EntityType="Self.OffspringStatistic" />
+          <AssociationSet Name="FK__Animal__AnimalTy__398D8EEE" Association="Self.FK__Animal__AnimalTy__398D8EEE">
+            <End Role="AnimalType" EntitySet="AnimalTypes" />
+            <End Role="Animal" EntitySet="Animals" />
+          </AssociationSet>
+          <AssociationSet Name="FK__MilkStati__Anima__3C69FB99" Association="Self.FK__MilkStati__Anima__3C69FB99">
+            <End Role="Animal" EntitySet="Animals" />
+            <End Role="MilkStatistics" EntitySet="MilkStatistics" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Offspring__Anima__3F466844" Association="Self.FK__Offspring__Anima__3F466844">
+            <End Role="Animal" EntitySet="Animals" />
+            <End Role="OffspringStatistics" EntitySet="OffspringStatistics" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="FarmDbModelStoreContainer" CdmEntityContainer="FarmDbEntities">
+          <EntitySetMapping Name="Animals">
+            <EntityTypeMapping TypeName="FarmDbModel.Animal">
+              <MappingFragment StoreEntitySet="Animal">
+                <ScalarProperty Name="AnimalId" ColumnName="AnimalId" />
+                <ScalarProperty Name="AnimalTypeId" ColumnName="AnimalTypeId" />
+                <ScalarProperty Name="MilkProduced" ColumnName="MilkProduced" />
+                <ScalarProperty Name="OffspringCount" ColumnName="OffspringCount" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AnimalTypes">
+            <EntityTypeMapping TypeName="FarmDbModel.AnimalType">
+              <MappingFragment StoreEntitySet="AnimalType">
+                <ScalarProperty Name="AnimalTypeId" ColumnName="AnimalTypeId" />
+                <ScalarProperty Name="AnimalName" ColumnName="AnimalName" />
+                <ScalarProperty Name="Sound" ColumnName="Sound" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="FarmStatistics">
+            <EntityTypeMapping TypeName="FarmDbModel.FarmStatistic">
+              <MappingFragment StoreEntitySet="FarmStatistics">
+                <ScalarProperty Name="StatisticsId" ColumnName="StatisticsId" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="TotalMilk" ColumnName="TotalMilk" />
+                <ScalarProperty Name="TotalOffspring" ColumnName="TotalOffspring" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MilkStatistics">
+            <EntityTypeMapping TypeName="FarmDbModel.MilkStatistic">
+              <MappingFragment StoreEntitySet="MilkStatistics">
+                <ScalarProperty Name="StatisticsId" ColumnName="StatisticsId" />
+                <ScalarProperty Name="AnimalId" ColumnName="AnimalId" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="MilkProduced" ColumnName="MilkProduced" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="OffspringStatistics">
+            <EntityTypeMapping TypeName="FarmDbModel.OffspringStatistic">
+              <MappingFragment StoreEntitySet="OffspringStatistics">
+                <ScalarProperty Name="StatisticsId" ColumnName="StatisticsId" />
+                <ScalarProperty Name="AnimalId" ColumnName="AnimalId" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="OffspringCount" ColumnName="OffspringCount" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
