@@ -2,6 +2,7 @@
 using FarmWinform.Services;
 using System;
 using System.Linq;
+using System.Text;
 using System.Windows.Forms;
 
 namespace FarmWinform
@@ -151,6 +152,20 @@ namespace FarmWinform
         {
             string sounds = _animalService.GetFarmSounds();
             MessageBox.Show($"The sounds heard in the farm: {sounds}");
+        }
+
+        private void btnGenerateReport_Click(object sender, EventArgs e)
+        {
+            var updatedAnimals = _animalService.GetAllAnimalsAfterBreedingAndMilking();
+            var report = new StringBuilder();
+
+            foreach (var animal in updatedAnimals)
+            {
+                report.AppendLine($"Animal ID: {animal.AnimalId}, Type: {animal.AnimalTypeName}, Offspring Born: {animal.OffspringGenerated}, Milk Produced: {animal.MilkProducedInRound} liters");
+            }
+
+            MessageBox.Show(report.ToString(), "Farm Report");
+            LoadData();
         }
     }
 }

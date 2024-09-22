@@ -7,5 +7,7 @@
         public string AnimalTypeName { get; set; }
         public double MilkProduced { get; set; }
         public int OffspringCount { get; set; }
+        public int OffspringGenerated { get; set; }
+        public double MilkProducedInRound { get; set; }
     }
 }

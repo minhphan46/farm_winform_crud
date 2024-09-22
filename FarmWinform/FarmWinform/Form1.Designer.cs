@@ -43,6 +43,7 @@
             this.btnCancel = new System.Windows.Forms.Button();
             this.cbAnimalType = new System.Windows.Forms.ComboBox();
             this.btnGetSound = new System.Windows.Forms.Button();
+            this.btnGenerateReport = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView)).BeginInit();
             this.SuspendLayout();
             // 
@@ -186,17 +187,28 @@
             // 
             this.btnGetSound.Location = new System.Drawing.Point(15, 263);
             this.btnGetSound.Name = "btnGetSound";
-            this.btnGetSound.Size = new System.Drawing.Size(105, 33);
+            this.btnGetSound.Size = new System.Drawing.Size(181, 33);
             this.btnGetSound.TabIndex = 13;
             this.btnGetSound.Text = "Get Sound";
             this.btnGetSound.UseVisualStyleBackColor = true;
             this.btnGetSound.Click += new System.EventHandler(this.btnGetSound_Click);
+            // 
+            // btnGenerateReport
+            // 
+            this.btnGenerateReport.Location = new System.Drawing.Point(202, 263);
+            this.btnGenerateReport.Name = "btnGenerateReport";
+            this.btnGenerateReport.Size = new System.Drawing.Size(172, 33);
+            this.btnGenerateReport.TabIndex = 14;
+            this.btnGenerateReport.Text = "Generate Report";
+            this.btnGenerateReport.UseVisualStyleBackColor = true;
+            this.btnGenerateReport.Click += new System.EventHandler(this.btnGenerateReport_Click);
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(937, 450);
+            this.Controls.Add(this.btnGenerateReport);
             this.Controls.Add(this.btnGetSound);
             this.Controls.Add(this.cbAnimalType);
             this.Controls.Add(this.btnCancel);
@@ -234,6 +246,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn dgMilkProduced;
         private System.Windows.Forms.DataGridViewTextBoxColumn dgOffspringCount;
         private System.Windows.Forms.Button btnGetSound;
+        private System.Windows.Forms.Button btnGenerateReport;
     }
 }
 
