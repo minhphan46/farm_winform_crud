@@ -1,12 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
-using System.Data.Entity.Infrastructure;
-using System.Drawing;
+using System.Data.Entity;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace FarmWinform
@@ -44,7 +39,14 @@ namespace FarmWinform
             // connect db
             using (FarmDbEntities db = new FarmDbEntities())
             {
-                db.Animals.Add(animal);
+                if (animal.AnimalId == 0)
+                {
+                    db.Animals.Add(animal);
+                }
+                else
+                {
+                    db.Entry(animal).State = EntityState.Modified;
+                }
                 db.SaveChanges();
             }
             Clear();
@@ -86,6 +88,43 @@ namespace FarmWinform
             return 0;
         }
 
+        private void dataGridView_DoubleClick(object sender, EventArgs e)
+        {
+            if (dataGridView.CurrentRow.Index != -1)
+            {
+                animal.AnimalId = Convert.ToInt32(dataGridView.CurrentRow.Cells["dgAnimalID"].Value);
+                using (FarmDbEntities db = new FarmDbEntities())
+                {
+                    animal = db.Animals.Where(x => x.AnimalId == animal.AnimalId).FirstOrDefault();
+                    cbAnimalType.SelectedIndex = 0;
+                    tbMilk.Text = animal.MilkProduced.ToString();
+                    tbOffspring.Text = animal.OffspringCount.ToString();
+                }
+                btSave.Text = "Update";
+                btnDelete.Enabled = true;
+            }
+        }
+
+        private void btnDelete_Click(object sender, EventArgs e)
+        {
+            if (MessageBox.Show("Are you Sure to Delete this Record", "Message", MessageBoxButtons.YesNo) == DialogResult.Yes)
+            {
+                using (FarmDbEntities db = new FarmDbEntities())
+                {
+                    var entry = db.Entry(animal);
+                    if (entry.State == EntityState.Detached)
+                    {
+                        db.Animals.Attach(animal);
+                        db.Animals.Remove(animal);
+                        db.SaveChanges();
+                        LoadData();
+                        Clear();
+                        MessageBox.Show("Deleted Successfully!");
+                    }
+                }
+            }
+        }
+
         private void btnCancel_Click(object sender, EventArgs e)
         {
             Clear();
@@ -99,9 +138,9 @@ namespace FarmWinform
             btnDelete.Enabled = false;
         }
 
+        // Handle the event to allow only numbers and one decimal point
         private void tbMilk_KeyPress(object sender, KeyPressEventArgs e)
         {
-            // Handle the event to allow only numbers and one decimal point
             if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar) &&
             (e.KeyChar != '.'))
             {
@@ -129,5 +168,7 @@ namespace FarmWinform
                 e.Handled = true;
             }
         }
+
+
     }
 }
