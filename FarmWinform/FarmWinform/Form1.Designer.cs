@@ -139,10 +139,6 @@
             // cbAnimalType
             // 
             this.cbAnimalType.FormattingEnabled = true;
-            this.cbAnimalType.Items.AddRange(new object[] {
-            "Cow",
-            "Sheep",
-            "Goat"});
             this.cbAnimalType.Location = new System.Drawing.Point(97, 64);
             this.cbAnimalType.Name = "cbAnimalType";
             this.cbAnimalType.Size = new System.Drawing.Size(277, 24);
@@ -160,7 +156,7 @@
             // 
             // dgAnimalType
             // 
-            this.dgAnimalType.DataPropertyName = "AnimalType";
+            this.dgAnimalType.DataPropertyName = "AnimalTypeName";
             this.dgAnimalType.HeaderText = "Animal Type";
             this.dgAnimalType.MinimumWidth = 6;
             this.dgAnimalType.Name = "dgAnimalType";

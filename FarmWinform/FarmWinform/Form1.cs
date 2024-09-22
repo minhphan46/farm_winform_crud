@@ -1,6 +1,6 @@
-﻿using System;
-using System.Data;
-using System.Data.Entity;
+﻿using FarmWinform.Dtos;
+using FarmWinform.Services;
+using System;
 using System.Linq;
 using System.Windows.Forms;
 
@@ -8,7 +8,9 @@ namespace FarmWinform
 {
     public partial class Form1 : Form
     {
-        Animal animal = new Animal();
+        private AnimalService _animalService = new AnimalService();
+        private AnimalDTO animal = new AnimalDTO();
+
         public Form1()
         {
             InitializeComponent();
@@ -23,31 +25,16 @@ namespace FarmWinform
         private void LoadData()
         {
             dataGridView.AutoGenerateColumns = false;
-            using (FarmDbEntities db = new FarmDbEntities())
-            {
-                var animalData = (from a in db.Animals
-                                  join at in db.AnimalTypes
-                                  on a.AnimalTypeId equals at.AnimalTypeId
-                                  select new
-                                  {
-                                      a.AnimalId,
-                                      AnimalType = at.AnimalName,
-                                      a.MilkProduced,
-                                      a.OffspringCount
-                                  }).ToList();
-
-                dataGridView.DataSource = animalData;
-            }
+            var animalData = _animalService.GetAllAnimals();
+            dataGridView.DataSource = animalData;
         }
+
         private void LoadAnimalTypes()
         {
-            using (FarmDbEntities db = new FarmDbEntities())
-            {
-                var animalTypes = db.AnimalTypes.ToList();
-                cbAnimalType.DataSource = animalTypes;
-                cbAnimalType.DisplayMember = "AnimalName";  // Hiển thị tên động vật trong ComboBox
-                cbAnimalType.ValueMember = "AnimalTypeId";  // Lưu giá trị ID cho loại động vật
-            }
+            var animalTypes = _animalService.GetAllAnimalTypes();
+            cbAnimalType.DataSource = animalTypes;
+            cbAnimalType.DisplayMember = "AnimalName";
+            cbAnimalType.ValueMember = "AnimalTypeId";
         }
 
         private void btSave_Click(object sender, EventArgs e)
@@ -58,19 +45,7 @@ namespace FarmWinform
             animal.MilkProduced = double.Parse(tbMilk.Text.Trim());
             animal.OffspringCount = int.Parse(tbOffspring.Text.Trim());
 
-            // connect db
-            using (FarmDbEntities db = new FarmDbEntities())
-            {
-                if (animal.AnimalId == 0)
-                {
-                    db.Animals.Add(animal);
-                }
-                else
-                {
-                    db.Entry(animal).State = EntityState.Modified;
-                }
-                db.SaveChanges();
-            }
+            _animalService.SaveAnimal(animal);
             Clear();
             LoadData();
             MessageBox.Show("Submitted Successfully!");
@@ -104,39 +79,28 @@ namespace FarmWinform
 
         private void dataGridView_DoubleClick(object sender, EventArgs e)
         {
-            if (dataGridView.CurrentRow.Index != -1)
-            {
-                animal.AnimalId = Convert.ToInt32(dataGridView.CurrentRow.Cells["dgAnimalID"].Value);
-                using (FarmDbEntities db = new FarmDbEntities())
-                {
-                    animal = db.Animals.Where(x => x.AnimalId == animal.AnimalId).FirstOrDefault();
-                    cbAnimalType.SelectedValue = animal.AnimalTypeId;
-                    tbMilk.Text = animal.MilkProduced.ToString();
-                    tbOffspring.Text = animal.OffspringCount.ToString();
-                }
-                btSave.Text = "Update";
-                btnDelete.Enabled = true;
-            }
+            if (dataGridView.CurrentRow.Index == -1) return;
+
+            animal.AnimalId = Convert.ToInt32(dataGridView.CurrentRow.Cells["dgAnimalID"].Value);
+            var selectedAnimal = _animalService.GetAllAnimals()
+                .FirstOrDefault(a => a.AnimalId == animal.AnimalId);
+
+            cbAnimalType.SelectedValue = selectedAnimal.AnimalTypeId;
+            tbMilk.Text = selectedAnimal.MilkProduced.ToString();
+            tbOffspring.Text = selectedAnimal.OffspringCount.ToString();
+
+            btSave.Text = "Update";
+            btnDelete.Enabled = true;
         }
 
         private void btnDelete_Click(object sender, EventArgs e)
         {
-            if (MessageBox.Show("Are you Sure to Delete this Record", "Message", MessageBoxButtons.YesNo) == DialogResult.Yes)
-            {
-                using (FarmDbEntities db = new FarmDbEntities())
-                {
-                    var entry = db.Entry(animal);
-                    if (entry.State == EntityState.Detached)
-                    {
-                        db.Animals.Attach(animal);
-                        db.Animals.Remove(animal);
-                        db.SaveChanges();
-                        LoadData();
-                        Clear();
-                        MessageBox.Show("Deleted Successfully!");
-                    }
-                }
-            }
+            if (MessageBox.Show("Are you Sure to Delete this Record", "Message", MessageBoxButtons.YesNo) != DialogResult.Yes) return;
+
+            _animalService.DeleteAnimal(animal.AnimalId);
+            LoadData();
+            Clear();
+            MessageBox.Show("Deleted Successfully!");
         }
 
         private void btnCancel_Click(object sender, EventArgs e)
