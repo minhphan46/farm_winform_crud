@@ -17,6 +17,7 @@ namespace FarmWinform
         private void Form1_Load(object sender, EventArgs e)
         {
             LoadData();
+            LoadAnimalTypes();
         }
 
         private void LoadData()
@@ -24,7 +25,28 @@ namespace FarmWinform
             dataGridView.AutoGenerateColumns = false;
             using (FarmDbEntities db = new FarmDbEntities())
             {
-                dataGridView.DataSource = db.Animals.ToList<Animal>();
+                var animalData = (from a in db.Animals
+                                  join at in db.AnimalTypes
+                                  on a.AnimalTypeId equals at.AnimalTypeId
+                                  select new
+                                  {
+                                      a.AnimalId,
+                                      AnimalType = at.AnimalName,
+                                      a.MilkProduced,
+                                      a.OffspringCount
+                                  }).ToList();
+
+                dataGridView.DataSource = animalData;
+            }
+        }
+        private void LoadAnimalTypes()
+        {
+            using (FarmDbEntities db = new FarmDbEntities())
+            {
+                var animalTypes = db.AnimalTypes.ToList();
+                cbAnimalType.DataSource = animalTypes;
+                cbAnimalType.DisplayMember = "AnimalName";  // Hiển thị tên động vật trong ComboBox
+                cbAnimalType.ValueMember = "AnimalTypeId";  // Lưu giá trị ID cho loại động vật
             }
         }
 
@@ -32,7 +54,7 @@ namespace FarmWinform
         {
             if (!ValidateField()) return;
 
-            animal.AnimalTypeId = GetAnimalTypeID(cbAnimalType.Text.Trim());
+            animal.AnimalTypeId = (int)cbAnimalType.SelectedValue;
             animal.MilkProduced = double.Parse(tbMilk.Text.Trim());
             animal.OffspringCount = int.Parse(tbOffspring.Text.Trim());
 
@@ -80,14 +102,6 @@ namespace FarmWinform
             return true;
         }
 
-        private int GetAnimalTypeID(string animalType)
-        {
-            if (animalType == "Cow") return 1;
-            if (animalType == "Sheep") return 2;
-            if (animalType == "Goat") return 3;
-            return 0;
-        }
-
         private void dataGridView_DoubleClick(object sender, EventArgs e)
         {
             if (dataGridView.CurrentRow.Index != -1)
@@ -96,7 +110,7 @@ namespace FarmWinform
                 using (FarmDbEntities db = new FarmDbEntities())
                 {
                     animal = db.Animals.Where(x => x.AnimalId == animal.AnimalId).FirstOrDefault();
-                    cbAnimalType.SelectedIndex = 0;
+                    cbAnimalType.SelectedValue = animal.AnimalTypeId;
                     tbMilk.Text = animal.MilkProduced.ToString();
                     tbOffspring.Text = animal.OffspringCount.ToString();
                 }
@@ -132,7 +146,7 @@ namespace FarmWinform
 
         private void Clear()
         {
-            cbAnimalType.Items.Clear();
+            cbAnimalType.SelectedIndex = -1;
             tbMilk.Clear();
             tbOffspring.Clear();
             btnDelete.Enabled = false;
@@ -168,7 +182,5 @@ namespace FarmWinform
                 e.Handled = true;
             }
         }
-
-
     }
 }
