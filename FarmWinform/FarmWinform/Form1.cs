@@ -146,5 +146,11 @@ namespace FarmWinform
                 e.Handled = true;
             }
         }
+
+        private void btnGetSound_Click(object sender, EventArgs e)
+        {
+            string sounds = _animalService.GetFarmSounds();
+            MessageBox.Show($"The sounds heard in the farm: {sounds}");
+        }
     }
 }

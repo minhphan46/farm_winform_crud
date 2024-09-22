@@ -29,6 +29,10 @@
         private void InitializeComponent()
         {
             this.dataGridView = new System.Windows.Forms.DataGridView();
+            this.dgAnimalID = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dgAnimalType = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dgMilkProduced = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dgOffspringCount = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Type = new System.Windows.Forms.Label();
             this.btSave = new System.Windows.Forms.Button();
             this.tbMilk = new System.Windows.Forms.TextBox();
@@ -38,10 +42,7 @@
             this.btnDelete = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
             this.cbAnimalType = new System.Windows.Forms.ComboBox();
-            this.dgAnimalID = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dgAnimalType = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dgMilkProduced = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dgOffspringCount = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.btnGetSound = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView)).BeginInit();
             this.SuspendLayout();
             // 
@@ -61,6 +62,43 @@
             this.dataGridView.Size = new System.Drawing.Size(531, 426);
             this.dataGridView.TabIndex = 0;
             this.dataGridView.DoubleClick += new System.EventHandler(this.dataGridView_DoubleClick);
+            // 
+            // dgAnimalID
+            // 
+            this.dgAnimalID.DataPropertyName = "AnimalId";
+            this.dgAnimalID.HeaderText = "ID";
+            this.dgAnimalID.MinimumWidth = 6;
+            this.dgAnimalID.Name = "dgAnimalID";
+            this.dgAnimalID.ReadOnly = true;
+            this.dgAnimalID.Visible = false;
+            this.dgAnimalID.Width = 125;
+            // 
+            // dgAnimalType
+            // 
+            this.dgAnimalType.DataPropertyName = "AnimalTypeName";
+            this.dgAnimalType.HeaderText = "Animal Type";
+            this.dgAnimalType.MinimumWidth = 6;
+            this.dgAnimalType.Name = "dgAnimalType";
+            this.dgAnimalType.ReadOnly = true;
+            this.dgAnimalType.Width = 125;
+            // 
+            // dgMilkProduced
+            // 
+            this.dgMilkProduced.DataPropertyName = "MilkProduced";
+            this.dgMilkProduced.HeaderText = "Milk Produced";
+            this.dgMilkProduced.MinimumWidth = 6;
+            this.dgMilkProduced.Name = "dgMilkProduced";
+            this.dgMilkProduced.ReadOnly = true;
+            this.dgMilkProduced.Width = 125;
+            // 
+            // dgOffspringCount
+            // 
+            this.dgOffspringCount.DataPropertyName = "OffspringCount";
+            this.dgOffspringCount.HeaderText = "Offspring Count";
+            this.dgOffspringCount.MinimumWidth = 6;
+            this.dgOffspringCount.Name = "dgOffspringCount";
+            this.dgOffspringCount.ReadOnly = true;
+            this.dgOffspringCount.Width = 125;
             // 
             // Type
             // 
@@ -144,48 +182,22 @@
             this.cbAnimalType.Size = new System.Drawing.Size(277, 24);
             this.cbAnimalType.TabIndex = 12;
             // 
-            // dgAnimalID
+            // btnGetSound
             // 
-            this.dgAnimalID.DataPropertyName = "AnimalId";
-            this.dgAnimalID.HeaderText = "ID";
-            this.dgAnimalID.MinimumWidth = 6;
-            this.dgAnimalID.Name = "dgAnimalID";
-            this.dgAnimalID.ReadOnly = true;
-            this.dgAnimalID.Visible = false;
-            this.dgAnimalID.Width = 125;
-            // 
-            // dgAnimalType
-            // 
-            this.dgAnimalType.DataPropertyName = "AnimalTypeName";
-            this.dgAnimalType.HeaderText = "Animal Type";
-            this.dgAnimalType.MinimumWidth = 6;
-            this.dgAnimalType.Name = "dgAnimalType";
-            this.dgAnimalType.ReadOnly = true;
-            this.dgAnimalType.Width = 125;
-            // 
-            // dgMilkProduced
-            // 
-            this.dgMilkProduced.DataPropertyName = "MilkProduced";
-            this.dgMilkProduced.HeaderText = "Milk Produced";
-            this.dgMilkProduced.MinimumWidth = 6;
-            this.dgMilkProduced.Name = "dgMilkProduced";
-            this.dgMilkProduced.ReadOnly = true;
-            this.dgMilkProduced.Width = 125;
-            // 
-            // dgOffspringCount
-            // 
-            this.dgOffspringCount.DataPropertyName = "OffspringCount";
-            this.dgOffspringCount.HeaderText = "Offspring Count";
-            this.dgOffspringCount.MinimumWidth = 6;
-            this.dgOffspringCount.Name = "dgOffspringCount";
-            this.dgOffspringCount.ReadOnly = true;
-            this.dgOffspringCount.Width = 125;
+            this.btnGetSound.Location = new System.Drawing.Point(15, 263);
+            this.btnGetSound.Name = "btnGetSound";
+            this.btnGetSound.Size = new System.Drawing.Size(105, 33);
+            this.btnGetSound.TabIndex = 13;
+            this.btnGetSound.Text = "Get Sound";
+            this.btnGetSound.UseVisualStyleBackColor = true;
+            this.btnGetSound.Click += new System.EventHandler(this.btnGetSound_Click);
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(937, 450);
+            this.Controls.Add(this.btnGetSound);
             this.Controls.Add(this.cbAnimalType);
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.btnDelete);
@@ -221,6 +233,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn dgAnimalType;
         private System.Windows.Forms.DataGridViewTextBoxColumn dgMilkProduced;
         private System.Windows.Forms.DataGridViewTextBoxColumn dgOffspringCount;
+        private System.Windows.Forms.Button btnGetSound;
     }
 }
 
